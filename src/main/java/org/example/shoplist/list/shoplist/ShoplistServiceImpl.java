@@ -9,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoplistServiceImpl implements ShoplistService{
@@ -27,9 +26,6 @@ public class ShoplistServiceImpl implements ShoplistService{
         this.productRepository = productRepository;
         this.shoplistProductRepository = shoplistProductRepository;
     }
-
-
-
 
     @Override
     public ResponseEntity<Shoplist> createShoplist(String name){
@@ -74,8 +70,16 @@ public class ShoplistServiceImpl implements ShoplistService{
     }
 
     @Override
-    public List<ShoplistProduct> getProductsOnList(Long shoplistId){
-        List<ShoplistProduct> list = new ArrayList<>();
-        return list;
+    public ResponseEntity<List<Product>> getProductsOnList(Long shoplistId){
+        Optional<Shoplist> shoplistOptional = shoplistRepository.findById(shoplistId);
+        if(shoplistOptional.isPresent()){
+            List<ShoplistProduct> shoplistProducts = shoplistProductRepository.findShoplistProductsByShoplist(shoplistOptional.get());
+            return ResponseEntity.status(HttpStatus.FOUND).body(shoplistProducts
+                            .stream()
+                            .map(ShoplistProduct::getProduct)
+                            .collect(Collectors.toList()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

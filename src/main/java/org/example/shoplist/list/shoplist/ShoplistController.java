@@ -1,9 +1,11 @@
 package org.example.shoplist.list.shoplist;
 
+import org.example.shoplist.list.product.Product;
+import org.example.shoplist.list.shoplistproduct.ShoplistProduct;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/shoplist")
@@ -17,4 +19,14 @@ public class ShoplistController {
     public ResponseEntity<Shoplist> save(String name){
         return shoplistServiceImpl.createShoplist(name);
     }
+    @GetMapping("/{shoplistId}/products")
+    public ResponseEntity<List<Product>> productsByList(@PathVariable Long shoplistId){
+        return shoplistServiceImpl.getProductsOnList(shoplistId);
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<ShoplistProduct> removeProductFromList(@RequestParam Long shoplistId, @RequestParam Long productId){
+        return shoplistServiceImpl.removeProduct(shoplistId, productId);
+    }
+
+
 }

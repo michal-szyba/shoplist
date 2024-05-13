@@ -18,6 +18,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -132,4 +134,43 @@ public class ShoplistServiceImplTest {
         verify(shoplistProductRepository, never()).deleteByShoplistAndProduct(any(), any());
     }
 
+    @Test
+    public void testGetProductsOnList_Success() {
+        Long shoplistId = 1L;
+        Shoplist shoplist = new Shoplist();
+        shoplist.setId(shoplistId);
+
+        ShoplistProduct shoplistProduct1 = new ShoplistProduct();
+        Product product1 = new Product();
+        product1.setName("Product1");
+        shoplistProduct1.setProduct(product1);
+
+        ShoplistProduct shoplistProduct2 = new ShoplistProduct();
+        Product product2 = new Product();
+        product1.setName("Product2");
+        shoplistProduct1.setProduct(product2);
+
+        List<ShoplistProduct> shoplistProducts = Arrays.asList(shoplistProduct1, shoplistProduct2);
+
+        when(shoplistRepository.findById(shoplistId)).thenReturn(Optional.of(shoplist));
+        when(shoplistProductRepository.findShoplistProductsByShoplist(shoplist)).thenReturn(shoplistProducts);
+
+        ResponseEntity<List<Product>> responseEntity = shoplistService.getProductsOnList(shoplistId);
+
+        assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
+        assertEquals(2, responseEntity.getBody().size());
+    }
+
+    @Test
+    public void testGetProductsOnList_NotFound() {
+        Long shoplistId = 1L;
+
+        when(shoplistRepository.findById(shoplistId)).thenReturn(Optional.empty());
+
+        ResponseEntity<List<Product>> responseEntity = shoplistService.getProductsOnList(shoplistId);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
 }
+
+

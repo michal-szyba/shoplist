@@ -1,10 +1,16 @@
 package org.example.shoplist.list.shoplistproduct;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.example.shoplist.list.product.Product;
 import org.example.shoplist.list.shoplist.Shoplist;
 
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 @Table(name = "shoplist_product")
 public class ShoplistProduct {
     @Id

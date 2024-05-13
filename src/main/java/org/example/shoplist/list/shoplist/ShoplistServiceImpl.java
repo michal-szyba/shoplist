@@ -1,5 +1,6 @@
 package org.example.shoplist.list.shoplist;
 
+import org.example.shoplist.list.product.Product;
 import org.example.shoplist.list.product.ProductRepository;
 import org.example.shoplist.list.shoplistproduct.ShoplistProduct;
 import org.example.shoplist.list.shoplistproduct.ShoplistProductRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShoplistServiceImpl implements ShoplistService{
@@ -41,8 +43,19 @@ public class ShoplistServiceImpl implements ShoplistService{
     }
 
     @Override
-    public void addProduct(Long shoplistId, Long productId, int quantity) {
-
+    public ResponseEntity<ShoplistProduct> addProduct(Long shoplistId, Long productId, int quantity) {
+        Optional<Shoplist> shoplistOptional = shoplistRepository.findById(shoplistId);
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(shoplistOptional.isPresent() && productOptional.isPresent()){
+            ShoplistProduct shoplistProduct = new ShoplistProduct();
+            shoplistProduct.setShoplist(shoplistOptional.get());
+            shoplistProduct.setProduct(productOptional.get());
+            shoplistProduct.setQuantity(quantity);
+            shoplistProductRepository.save(shoplistProduct);
+            return ResponseEntity.status(HttpStatus.FOUND).body(shoplistProduct);
+        } else {
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Override

@@ -92,5 +92,44 @@ public class ShoplistServiceImplTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+    @Test
+    public void testRemoveProduct_Success() {
+        Long shoplistId = 1L;
+        Long productId = 1L;
+        Shoplist shoplist = new Shoplist();
+        shoplist.setId(shoplistId);
+        Product product = new Product();
+        product.setId(productId);
+        when(shoplistRepository.findById(shoplistId)).thenReturn(Optional.of(shoplist));
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+
+        ResponseEntity<ShoplistProduct> response = shoplistService.removeProduct(shoplistId, productId);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(shoplistProductRepository).deleteByShoplistAndProduct(shoplist, product);
+    }
+
+    @Test
+    public void testRemoveProduct_ShoplistNotFound() {
+        Long shoplistId = 1L;
+        Long productId = 1L;
+        when(shoplistRepository.findById(shoplistId)).thenReturn(Optional.empty());
+        ResponseEntity<ShoplistProduct> response = shoplistService.removeProduct(shoplistId, productId);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(shoplistProductRepository, never()).deleteByShoplistAndProduct(any(), any());
+    }
+
+    @Test
+    public void testRemoveProduct_ProductNotFound() {
+        Long shoplistId = 1L;
+        Long productId = 1L;
+        Shoplist shoplist = new Shoplist();
+        shoplist.setId(shoplistId);
+        when(shoplistRepository.findById(shoplistId)).thenReturn(Optional.of(shoplist));
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+        ResponseEntity<ShoplistProduct> response = shoplistService.removeProduct(shoplistId, productId);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(shoplistProductRepository, never()).deleteByShoplistAndProduct(any(), any());
+    }
 
 }

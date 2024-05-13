@@ -8,6 +8,6 @@ import java.util.List;
 public interface ShoplistService {
     ResponseEntity<Shoplist> createShoplist(String name);
     ResponseEntity<ShoplistProduct> addProduct(Long shoplistId, Long productId, int quantity);
-    void removeProduct(Long shoplistId, Long productId);
+    ResponseEntity<ShoplistProduct> removeProduct(Long shoplistId, Long productId);
     List<ShoplistProduct> getProductsOnList(Long shoplistId);
 }

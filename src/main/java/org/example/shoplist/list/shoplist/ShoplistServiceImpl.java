@@ -59,8 +59,18 @@ public class ShoplistServiceImpl implements ShoplistService{
     }
 
     @Override
-    public void removeProduct(Long shoplistId, Long productId) {
-
+    public ResponseEntity<ShoplistProduct> removeProduct(Long shoplistId, Long productId) {
+        Optional<Shoplist> shoplistOptional = shoplistRepository.findById(shoplistId);
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(shoplistOptional.isPresent() && productOptional.isPresent()){
+            shoplistProductRepository.deleteByShoplistAndProduct(
+                    shoplistOptional.get(),
+                    productOptional.get()
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
-package org.example.shoplist.list;
+package org.example.shoplist.list.shoplistproduct;
 
 import jakarta.persistence.*;
+import org.example.shoplist.list.product.Product;
+import org.example.shoplist.list.shoplist.Shoplist;
 
 @Entity
 @Table(name = "shoplist_product")

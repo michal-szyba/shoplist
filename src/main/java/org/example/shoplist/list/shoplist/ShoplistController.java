@@ -16,7 +16,7 @@ public class ShoplistController {
         this.shoplistServiceImpl = shoplistServiceImpl;
     }
     @PostMapping("/add")
-    public ResponseEntity<Shoplist> save(String name){
+    public ResponseEntity<Shoplist> save(@RequestBody String name){
         return shoplistServiceImpl.createShoplist(name);
     }
     @GetMapping("/{shoplistId}/products")
@@ -24,7 +24,8 @@ public class ShoplistController {
         return shoplistServiceImpl.getProductsOnList(shoplistId);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<ShoplistProduct> removeProductFromList(@RequestParam Long shoplistId, @RequestParam Long productId){
+    public ResponseEntity<ShoplistProduct> removeProductFromList(@RequestParam("shoplistId") Long shoplistId,
+                                                                 @RequestParam("productId") Long productId){
         return shoplistServiceImpl.removeProduct(shoplistId, productId);
     }
 

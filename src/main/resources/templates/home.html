@@ -8,10 +8,19 @@
 </head>
 <body>
 <header>
-    <h1>Shoplists</h1>
 </header>
 <main>
     <section id="shoplists">
+        <h1> Lists </h1>
+        <div th:each="shoplistDTO : ${shoplistsDTOS}">
+            <h2 th:text="${shoplistDTO.getName()}"></h2>
+            <ul>
+                <li th:each="product : ${shoplistDTO.getProducts()}">
+                    <span th:text="${product.getName()}"></span>
+                    <span th:text="${product.getQuantity()}"></span>
+                </li>
+            </ul>
+        </div>
     </section>
 </main>
 <footer>

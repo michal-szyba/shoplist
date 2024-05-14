@@ -29,5 +29,12 @@ public class ShoplistController {
         return shoplistServiceImpl.removeProduct(shoplistId, productId);
     }
 
+    @PostMapping("/addproduct")
+    public ResponseEntity<ShoplistProduct> addProduct(@RequestParam("shoplistId") Long shoplistId,
+                                                      @RequestParam("productId") Long productId,
+                                                      @RequestParam("quantity") int quantity){
+        return shoplistServiceImpl.addProduct(shoplistId, productId, quantity);
+    }
+
 
 }

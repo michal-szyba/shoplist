@@ -11,4 +11,5 @@ public interface ShoplistService {
     ResponseEntity<ShoplistProduct> addProduct(Long shoplistId, Long productId, int quantity);
     ResponseEntity<ShoplistProduct> removeProduct(Long shoplistId, Long productId);
     ResponseEntity<List<Product>> getProductsOnList(Long shoplistId);
+    List<ShoplistDTO> getAllShoplistsDTO();
 }

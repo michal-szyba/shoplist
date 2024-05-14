@@ -1,6 +1,7 @@
 package org.example.shoplist.list.shoplist;
 
 import org.example.shoplist.list.product.Product;
+import org.example.shoplist.list.product.ProductDTO;
 import org.example.shoplist.list.product.ProductRepository;
 import org.example.shoplist.list.shoplistproduct.ShoplistProduct;
 import org.example.shoplist.list.shoplistproduct.ShoplistProductRepository;
@@ -81,5 +82,25 @@ public class ShoplistServiceImpl implements ShoplistService{
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @Override
+    public List<ShoplistDTO> getAllShoplistsDTO(){
+        List<Shoplist> shoplists = shoplistRepository.findAll();
+        return shoplists.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private ShoplistDTO convertToDTO(Shoplist shoplist){
+        List<ProductDTO> productDTOs = shoplistProductRepository.findShoplistProductsByShoplist(shoplist).stream()
+                .map(shoplistProduct -> {
+                    ProductDTO productDTO = new ProductDTO();
+                    productDTO.setName(shoplistProduct.getProduct().getName());
+                    productDTO.setQuantity(shoplistProduct.getQuantity());
+                    return productDTO;
+                })
+                .toList();
+        return new ShoplistDTO(shoplist.getId(), shoplist.getName(), productDTOs);
     }
 }

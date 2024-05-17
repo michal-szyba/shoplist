@@ -11,21 +11,25 @@
 </header>
 <main>
     <section id="shoplists">
-        <h1> Lists </h1>
+        <h1> Shopping lists </h1>
         <div th:each="shoplistDTO : ${shoplistsDTOS}">
-            <h2 th:text="${shoplistDTO.getName()}"></h2>
-            <ul>
-                <li th:each="product : ${shoplistDTO.getProducts()}">
-                    <span th:text="${product.getName()}"></span>
-                    <span th:text="${product.getQuantity()}"></span>
-                </li>
-            </ul>
+            <h2>
+                <span th:text="${shoplistDTO.getName()}"></span>
+                <button class="toggle-btn">Expand</button>
+            </h2>
+                <ul class="product-list expandable">
+                    <li th:each="product : ${shoplistDTO.getProducts()}">
+                      <span th:text="${product.getName()}"></span>,&nbsp
+                      <span th:text="${product.getQuantity()}"></span>
+                     </li>
+                </ul>
         </div>
     </section>
 </main>
+<script src="/js/script.js"></script>
+
 <footer>
     <p>&copy; 2024 Michaś Solutions</p>
 </footer>
-<script src="/js/script.js"></script>
 </body>
 </html>

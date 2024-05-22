@@ -29,5 +29,9 @@ public class UiController {
         model.addAttribute("shoplistsDTOS", shoplistDTOS);
         return "home";
     }
+    @GetMapping("/newlist")
+    public String newList(){
+        return "newList";
+    }
 
 }

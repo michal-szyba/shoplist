@@ -11,7 +11,7 @@
 </header>
 <main>
     <section id="shoplists">
-        <h1> Shopping lists </h1>
+        <h1> Shopping lists <a href="/newList">New list </a></h1>
         <div th:each="shoplistDTO : ${shoplistsDTOS}">
             <h2>
                 <span th:text="${shoplistDTO.getName()}"></span>

@@ -4,13 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleButtons.forEach(button => {
         button.addEventListener("click", function() {
             const productContainer = this.parentNode.nextElementSibling;
-            if (productContainer) {
-                productContainer.classList.toggle("expanded");
-                productContainer.classList.toggle("expandable");
-                console.log("toggled")
-            } else {
-                console.error("Nie znaleziono kontenera produktów.");
-            }
+            productContainer.classList.toggle("expanded");
+            productContainer.classList.toggle("expandable");
+            console.log("toggled")
         });
     });
 

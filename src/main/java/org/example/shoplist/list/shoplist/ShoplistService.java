@@ -12,4 +12,5 @@ public interface ShoplistService {
     ResponseEntity<ShoplistProduct> removeProduct(Long shoplistId, Long productId);
     ResponseEntity<List<Product>> getProductsOnList(Long shoplistId);
     List<ShoplistDTO> getAllShoplistsDTO();
+    boolean updatePurchasedStatus(Long id, Boolean purchased);
 }

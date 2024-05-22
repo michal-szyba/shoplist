@@ -21,6 +21,11 @@
                     <li th:each="product : ${shoplistDTO.getProducts()}">
                       <span th:text="${product.getName()}"></span>,&nbsp
                       <span th:text="${product.getQuantity()}"></span>
+                        <span th:text="${product.getShoplistProductId()}"></span>
+                        <input type="checkbox"
+                               th:checked="${product.isPurchased()}"
+                               th:data-id="${product.getShoplistProductId()}"
+                               class="purchased-checkbox">
                      </li>
                 </ul>
         </div>

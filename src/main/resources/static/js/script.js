@@ -1,20 +1,46 @@
 document.addEventListener("DOMContentLoaded", function() {
     let toggleButtons = document.querySelectorAll(".toggle-btn");
 
-    toggleButtons.forEach(function(button) {
+    toggleButtons.forEach(button => {
         button.addEventListener("click", function() {
-            let parentDiv = this.parentElement.parentElement;
-            let productList = parentDiv.querySelector('.product-list');
-
-            if(productList.classList.contains("expandable")){
-                productList.classList.remove("expandable");
-                productList.classList.add("expanded");
-            } else if(productList.classList.contains("expanded")){
-                productList.classList.remove("expanded");
-                productList.classList.add("expandable");
+            const productContainer = this.parentNode.nextElementSibling;
+            if (productContainer) {
+                productContainer.classList.toggle("expanded");
+                productContainer.classList.toggle("expandable");
+                console.log("toggled")
+            } else {
+                console.error("Nie znaleziono kontenera produktów.");
             }
-            console.log("o skurwysyn");
-
         });
     });
+
+    const checkboxes = document.querySelectorAll('.purchased-checkbox');
+    console.log(checkboxes);
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function(){
+            const productId = this.getAttribute('data-id');
+            const purchased = this.checked;
+
+            fetch('/updatePurchasedStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id:productId,
+                    purchased: purchased
+                }),
+            })
+                .then(data => {
+                    if(data){
+                        console.log("successfully updated \'purchased\' status");
+                    } else {
+                        console.log("error updating \'purchased\' status");
+                    }
+                })
+                .catch(error => {
+                    console.log("error: ", error)
+                })
+        })
+    })
 });

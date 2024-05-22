@@ -8,5 +8,6 @@ import lombok.Setter;
 public class ProductDTO {
     private int quantity;
     private String name;
-
+    private Long shoplistProductId;
+    private boolean purchased;
 }

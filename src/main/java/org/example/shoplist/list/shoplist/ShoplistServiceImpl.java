@@ -98,9 +98,23 @@ public class ShoplistServiceImpl implements ShoplistService{
                     ProductDTO productDTO = new ProductDTO();
                     productDTO.setName(shoplistProduct.getProduct().getName());
                     productDTO.setQuantity(shoplistProduct.getQuantity());
+                    productDTO.setShoplistProductId(shoplistProduct.getId());
+                    productDTO.setPurchased(shoplistProduct.isPurchased());
                     return productDTO;
                 })
                 .toList();
         return new ShoplistDTO(shoplist.getId(), shoplist.getName(), productDTOs);
+    }
+
+    public boolean updatePurchasedStatus(Long id, Boolean purchased) {
+        Optional<ShoplistProduct> shoplistProductOptional = shoplistProductRepository.findById(id);
+        if (shoplistProductOptional.isPresent()) {
+            ShoplistProduct shoplistProduct = shoplistProductOptional.get();
+            shoplistProduct.setPurchased(purchased);
+            shoplistProductRepository.save(shoplistProduct);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -25,4 +25,5 @@ public class ShoplistProduct {
     @JoinColumn(name = "product_id")
     private Product product;
     private int quantity;
+    private boolean purchased;
 }
